@@ -33,7 +33,7 @@
             md="4"
           >
             <v-text-field
-              v-model="price"
+              v-model.number="price"
               :rules="priceRules"
               type="number"
               label="Цена"
@@ -46,7 +46,7 @@
             md="4"
           >
             <v-text-field
-              v-model="quantity"
+              v-model.number.trim="quantity"
               :rules="quantityRules"
               type="number"
               label="Количество"
@@ -114,14 +114,13 @@ export default class ProductsForm extends Vue {
     if (!this.validForm) return;
 
     this.$store.dispatch('addProduct', {
-      id: this.$store.state.products.length + 1,
       name: this.name,
       category: this.category,
       price: this.price,
       quantity: this.quantity,
     });
 
-    this.$refs.form?.reset();
+    this.$refs.form.reset();
   }
 }
 </script>

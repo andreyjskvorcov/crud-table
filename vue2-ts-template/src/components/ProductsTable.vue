@@ -5,8 +5,8 @@
           item-key="id"
           class="elevation-1"
           :headers="headers"
-          :items="products"
-          :loading="isLoading"
+          :items="$store.state.products"
+          :loading="$store.state.loading"
           :items-per-page="-1"
           :disable-sort="true"
           hide-default-footer
@@ -30,11 +30,11 @@
               </td>
 
               <td>
-                <v-btn @click="deleteProduct(item.id)">Удалить</v-btn>
+                <v-btn @click="deleteProduct(item.id)" :disabled="$store.state.loading">Удалить</v-btn>
         
-                <v-btn @click="moveUp(item.id)">Вверх</v-btn>
+                <v-btn @click="moveUp(item.id)" :disabled="$store.state.loading">Вверх</v-btn>
 
-                <v-btn @click="moveDown(item.id)">Вниз</v-btn>
+                <v-btn @click="moveDown(item.id)" :disabled="$store.state.loading">Вниз</v-btn>
               </td>
             </tr>
           </template>
@@ -44,7 +44,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Emit } from 'vue-property-decorator';
+import { Vue, Component } from 'vue-property-decorator';
 import { IProduct } from '@/types';
 
 type Header = {
@@ -54,16 +54,8 @@ type Header = {
 
 @Component({ name: 'ProductsTable' })
 export default class ProductsTable extends Vue {
-  get products() {
-    return this.$store.state.products;
-  }
-
-  isLoading = false;
-
   async deleteProduct(id: number) {
-    this.isLoading = true;
     await this.$store.dispatch('deleteProduct', id);
-    this.isLoading = false;
   }
 
   headers: Header[] = [
@@ -77,21 +69,15 @@ export default class ProductsTable extends Vue {
   ];
 
   async created() {
-    this.isLoading = true;
     await this.$store.dispatch('fetchProducts');
-    this.isLoading = false;
   }
 
   async moveUp(id: number) {
-    this.isLoading = true;
     await this.$store.dispatch('moveUp', id);
-    this.isLoading = false;
   }
 
   async moveDown(id: number) {
-    this.isLoading = true;
     await this.$store.dispatch('moveDown', id);
-    this.isLoading = false;
   }
 }
 </script>

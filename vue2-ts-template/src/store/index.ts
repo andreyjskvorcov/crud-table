@@ -7,47 +7,51 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    products: [] as IProduct[]
+    products: [] as IProduct[],
+    loading: false
   },
   mutations: {
    
   },
   actions: {
     async fetchProducts({ state }) {
+      state.loading = true;
       const data = await getProducts();
 
       state.products = data;
+      state.loading = false;
     },
-    async deleteProduct({ state }, id: number) {
-      state.products = state.products.filter(product => product.id !== id);  // что бы не было fetchProducts
-
+    async deleteProduct({ dispatch }, id: number) {
       await deleteProduct(id);
+      await dispatch('fetchProducts');
     },
-    async addProduct({ state }, product: IProduct) {
+    async addProduct({ dispatch }, product: IProduct) {
       await addProduct(product); // что бы не было fetchProducts
-      state.products.push(product);
+      await dispatch('fetchProducts');
     },
     async moveUp({ state }, id: number) {
+      state.loading = true;
       const elIndex = state.products.findIndex(product => product.id === id);
 
-       // что бы не было fetchProducts
       if (elIndex > 0) {
         const item = state.products.splice(elIndex, 1)[0];
         state.products.splice(elIndex - 1, 0, item);
 
         await updateProducts(state.products);
       }
+      state.loading = false;
     },
     async moveDown({ state }, id: number) {
+      state.loading = true;
       const elIndex = state.products.findIndex(product => product.id === id);
 
-       // что бы не было fetchProducts
       if (elIndex !== -1 && elIndex < state.products.length - 1) {
         const item = state.products.splice(elIndex, 1)[0];  
         state.products.splice(elIndex + 1, 0, item);
 
         await updateProducts(state.products);
       }
+      state.loading = false;
     },
   },
 });

@@ -30,10 +30,6 @@ function safeWrite(products: IProduct[]) {
   }
 }
 
-function nextId(list: IProduct[]): number {
-  return list.length ? Math.max(...list.map(p => Number(p.id) || 0)) + 1 : 1
-}
-
 export const getProducts = async (): Promise<IProduct[]> => {
   await delay()
   let products = safeRead()
@@ -44,21 +40,20 @@ export const getProducts = async (): Promise<IProduct[]> => {
   return products
 }
 
-export const deleteProduct = async (id: number): Promise<void> => {
+export const deleteProduct = async (id: number): Promise<{ success: true }> => {
   await delay()
   const products = safeRead().filter(p => p.id !== id)
   safeWrite(products)
+  return { success: true as const }
 }
 
-export const addProduct = async (product: IProduct): Promise<void> => {
+export const addProduct = async (product: IProduct): Promise<{ success: true }> => {
   await delay()
   const products = safeRead()
-  const id = product.id ?? nextId(products)
-  const item = { ...product, id }
-  const idx = products.findIndex(p => p.id === id)
-  if (idx >= 0) products[idx] = item
-  else products.push(item)
+  const payload = { ...(product as IProduct), id: Date.now() }
+  products.push(payload)
   safeWrite(products)
+  return { success: true as const }
 }
 
 export const updateProducts = async (products: IProduct[]): Promise<void> => {
