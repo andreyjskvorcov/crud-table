@@ -19,17 +19,18 @@ export default new Vuex.Store({
       state.products = data;
     },
     async deleteProduct({ state }, id: number) {
-      state.products = state.products.filter(product => product.id !== id);
+      state.products = state.products.filter(product => product.id !== id);  // что бы не было fetchProducts
 
       await deleteProduct(id);
     },
     async addProduct({ state }, product: IProduct) {
-      await addProduct(product);
+      await addProduct(product); // что бы не было fetchProducts
       state.products.push(product);
     },
     async moveUp({ state }, id: number) {
       const elIndex = state.products.findIndex(product => product.id === id);
 
+       // что бы не было fetchProducts
       if (elIndex > 0) {
         const item = state.products.splice(elIndex, 1)[0];
         state.products.splice(elIndex - 1, 0, item);
@@ -40,6 +41,7 @@ export default new Vuex.Store({
     async moveDown({ state }, id: number) {
       const elIndex = state.products.findIndex(product => product.id === id);
 
+       // что бы не было fetchProducts
       if (elIndex !== -1 && elIndex < state.products.length - 1) {
         const item = state.products.splice(elIndex, 1)[0];  
         state.products.splice(elIndex + 1, 0, item);
@@ -48,7 +50,4 @@ export default new Vuex.Store({
       }
     },
   },
-  getters: {
-    
-  }
 });
