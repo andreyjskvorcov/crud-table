@@ -93,6 +93,10 @@ const numberRules: Array<(v: number | string) => true | string> = [
 
 @Component
 export default class ProductsForm extends Vue {
+  $refs!: {
+    form: Vue & { reset: () => void };
+  };
+
   validForm = false;
 
   name = '';
@@ -120,7 +124,7 @@ export default class ProductsForm extends Vue {
       quantity: this.quantity,
     });
 
-    this.$refs.form?.reset();
+    this.$refs.form.reset();
   }
 }
 </script>
