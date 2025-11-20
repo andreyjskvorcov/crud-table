@@ -1,16 +1,18 @@
 <template>
-  <hello-world />
+  <v-container>
+    <products-table />
+  </v-container>
 </template>
 
 <script lang="ts">
-  import Vue from 'vue'
-  import HelloWorld from '../components/HelloWorld.vue'
+import { Vue, Component } from 'vue-property-decorator';
+import ProductsTable from '@/components/ProductsTable.vue';
 
-  export default Vue.extend({
-    name: 'HomePage',
+@Component({
+  components: { ProductsTable }
+})
 
-    components: {
-      HelloWorld,
-    },
-  })
+export default class HomeView extends Vue {
+  
+}
 </script>
