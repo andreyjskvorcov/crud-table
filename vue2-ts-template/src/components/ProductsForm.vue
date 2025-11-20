@@ -120,7 +120,7 @@ export default class ProductsForm extends Vue {
       quantity: this.quantity,
     });
 
-    this.$refs.form.reset();
+    this.$refs.form?.reset();
   }
 }
 </script>
