@@ -1,4 +1,4 @@
-# my-project
+# vue2-ts-template
 
 ## Project setup
 ```
