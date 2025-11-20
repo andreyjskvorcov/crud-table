@@ -42,7 +42,7 @@ export interface IProduct {
 - Генерация `id`: на стороне API (по умолчанию `Date.now()`)
 - Методы:
   - `getProducts(): Promise<IProduct[]>`
-  - `addProduct(payload: Omit<IProduct, 'id'>): Promise<void | IProduct>`
+  - `addProduct(payload: IProduct): Promise<{ success: true }>`
   - `deleteProduct(id: number): Promise<void>`
   - `updateProducts(list: IProduct[]): Promise<void>` — сохраняет текущий порядок/состав
 
